@@ -13,7 +13,6 @@ Super easy flat file based selfhosted skill tracker (learn new skills from multi
 
 ## TODO
 
-* Make progress changeable
 * Use order
 * Allow creation of a new course
 

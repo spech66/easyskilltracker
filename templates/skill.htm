@@ -8,6 +8,12 @@
     <h1><i data-bind="attr: { class: icon }"></i> <span data-bind="text: name"></span></h1>
     <p data-bind="text: description"></p>
     <p><em>Course created by <a data-bind="attr: { href: url, title: author }" target="_blank"><span data-bind="text: author"></span></a>. Version <span data-bind="text: version"></span>.</em></p>
+
+    <div class="alert alert-success" role="alert" data-bind="visible: successMessage().length > 0">
+        Saved successfully.
+    </div>
+    <div class="alert alert-danger" role="alert" data-bind="visible: errorMessage().length > 0, text: errorMessage">
+    </div>
        
     <!-- ko foreach: groups -->
         <h2><span data-bind="text: name"></span></h2>
@@ -28,7 +34,7 @@
                     <td data-bind="foreach: resources">
                         <a data-bind="attr: { href: $data, title: $data }" target="_blank"><i class="fas fa-link"></i></a>
                     </td>
-                    <td><progress-widget params="progress: progress"></progress-widget></td>
+                    <td><a href="#" data-bind=" click: function(data, event) { $root.upgradeProgress($parent, data, event) }"><progress-widget params="progress: progress"></progress-widget></a></td>
                 </tr>
             </tbody>
         </table>
@@ -40,6 +46,8 @@
     function SkillsViewModel() {
         // Data
         var self = this;
+        self.successMessage = ko.observable("");
+        self.errorMessage = ko.observable("");
         self.name = ko.observable("");
         self.description = ko.observable("");
         self.author = ko.observable("")
@@ -47,6 +55,24 @@
         self.version = ko.observable("");
         self.icon = ko.observable("");
         self.groups = ko.observableArray([]);
+
+        // Operation
+        self.upgradeProgress = function(group, skill, event) {
+            $.ajax({
+                url: '/api/skill/progress/{{ .course }}',
+                type: 'PATCH',
+                data: {
+                    group: group.order,
+                    skill: skill.order
+                }
+            })
+            .done(function(data) {
+                self.getAll(); // not so performant... => TODO: use nested observables
+            })
+            .fail(function (jqXHR, textStatus, error) {
+                self.errorMessage("Delete error: " + error);
+            });
+        }
 
         // Custom components
         ko.components.register('progress-widget', {
@@ -58,15 +84,18 @@
         });
 
         // Load initial state from server, convert it to Course instances, then populate self.course
-        $.getJSON("/api/skill/{{ .course }}", function(data) {
-            self.name(data.name);
-            self.description(data.description);
-            self.author(data.author)
-            self.url(data.url);
-            self.version(data.version);
-            self.icon(data.icon);
-            self.groups(data.groups);
-        });
+        self.getAll = function() {
+            $.getJSON("/api/skill/{{ .course }}", function(data) {
+                self.name(data.name);
+                self.description(data.description);
+                self.author(data.author)
+                self.url(data.url);
+                self.version(data.version);
+                self.icon(data.icon);
+                self.groups(data.groups);
+            });
+        }
+        self.getAll();
     }
 
     $(function () {

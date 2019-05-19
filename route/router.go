@@ -66,6 +66,7 @@ func Init(data string) *echo.Echo {
 		apiGroup.GET("/course", api.GetCourse())
 
 		apiGroup.GET("/skill/:course", api.GetSkill())
+		apiGroup.PATCH("/skill/progress/:course", api.UpgradeProgress())
 	}
 
 	return e
