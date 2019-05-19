@@ -2,6 +2,17 @@
 
 Super easy flat file based selfhosted skill tracker (learn new skills from multiple resources).
 
+## Features
+
+* Have all related skills in one file
+* Share files (courses) with others
+* Easy to use interface
+* Mobile/Tablet ready (large buttons, ...)
+* Selfhosted
+* Free and open
+
+## Security information
+
 This daemon is developed for use in a private network. For securing the access use a proxy like nginx (see below)!
 
 ## Build and run from source

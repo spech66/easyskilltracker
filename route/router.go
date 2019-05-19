@@ -8,6 +8,7 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/spech66/easyskilltracker/api"
+	"github.com/spech66/easyskilltracker/view"
 )
 
 func configExtender(data string) echo.MiddlewareFunc {
@@ -48,14 +49,14 @@ func Init(data string) *echo.Echo {
 	e.Use(configExtender(data))
 
 	// View routes => handler
-	// e.GET("/", view.HomeHandler)
+	e.GET("/", view.HomeHandler)
 
 	// Parse all templates
-	/// templates := make(map[string]*template.Template)
-	// templates["index.htm"] = template.Must(template.ParseFiles("templates/index.htm", "templates/_base.htm"))
-	/*e.Renderer = &TemplateRegistry{
+	templates := make(map[string]*template.Template)
+	templates["index.htm"] = template.Must(template.ParseFiles("templates/index.htm", "templates/_base.htm"))
+	e.Renderer = &TemplateRegistry{
 		templates: templates,
-	}*/
+	}
 
 	// Api routes => handler
 	apiGroup := e.Group("/api")
