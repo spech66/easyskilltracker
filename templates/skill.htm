@@ -28,7 +28,7 @@
                     <td data-bind="foreach: resources">
                         <a data-bind="attr: { href: $data, title: $data }" target="_blank"><i class="fas fa-link"></i></a>
                     </td>
-                    <td><span data-bind="text: progress"></span></td>
+                    <td><progress-widget params="progress: progress"></progress-widget></td>
                 </tr>
             </tbody>
         </table>
@@ -40,7 +40,7 @@
     function SkillsViewModel() {
         // Data
         var self = this;
-        self.name = ko.observable("xxx");
+        self.name = ko.observable("");
         self.description = ko.observable("");
         self.author = ko.observable("")
         self.url = ko.observable("");
@@ -48,9 +48,17 @@
         self.icon = ko.observable("");
         self.groups = ko.observableArray([]);
 
+        // Custom components
+        ko.components.register('progress-widget', {
+            viewModel: function(params) {
+                var emojis = ['➖','😅','😱', '✔️'];
+                this.emoji = params.progress > -1 && params.progress < 4 ? emojis[params.progress] : params.progress;
+            },
+            template: '<span data-bind="text: emoji"></span>'
+        });
+
         // Load initial state from server, convert it to Course instances, then populate self.course
         $.getJSON("/api/skill/{{ .course }}", function(data) {
-            console.log(data);
             self.name(data.name);
             self.description(data.description);
             self.author(data.author)

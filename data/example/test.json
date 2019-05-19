@@ -15,14 +15,14 @@
                     "order": 0,
                     "description": "Learn the running man",
                     "resources": [ "https://www.youtube.com/watch?v=v-fsbZ5VgTU" ],
-                    "progress": 0
+                    "progress": 3
                 },
                 {
                     "name": "Running Man Tutorial",
-                    "order": 0,
+                    "order": 1,
                     "description": "Learn the running man",
                     "resources": [ "https://www.youtube.com/watch?v=zt6ixfK2WQg" ],
-                    "progress": 0
+                    "progress": 1
                 }
                 
             ]
