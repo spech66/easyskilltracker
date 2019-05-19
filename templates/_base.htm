@@ -21,11 +21,6 @@
             input {
                 text-align: center;
             }
-            .btn {
-                min-width: 100%;
-                margin-top: 10px;
-                margin-bottom: 10px;
-            }
             select {
                 text-align: center;
                 text-align-last: center;
@@ -52,17 +47,50 @@
             <div class="collapse navbar-collapse" id="nav01">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active"><a class="nav-link" href="/"><i class="fas fa-list"></i></a></li>
+                    <li class="nav-item active"><a class="nav-link" href="#" data-toggle="modal" data-target="#newCourseModal"><i class="fas fa-plus-circle"></i></a></li>
                 </ul>
             </div>
         </nav>
 
         {{template "body" .}}
+
+        <!-- new course modal -->
+        <div class="modal fade" id="newCourseModal" tabindex="-1" role="dialog" aria-labelledby="newCourseModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="newCourseModalLabel">New course</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="newCourseForm">
+                            <div class="form-group">
+                                <label for="newCourseInputName">Name</label>
+                                <input class="form-control form-control-lg" type="text" id="newCourseInputName" name="name" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/de.js"></script>
+        <script>
+            $("#newCourseForm").submit(function(e) {
+                e.preventDefault();
+                $.post('/api/course', $('#newCourseForm').serialize(), function(data) {
+                    document.location.href = "/";
+                });
+            });
+        </script>
         {{template "scripts" .}}
     </body>
 </html>

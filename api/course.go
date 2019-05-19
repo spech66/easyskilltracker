@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/labstack/echo"
@@ -61,5 +62,36 @@ func GetCourse() echo.HandlerFunc {
 
 		jsonData := helper.DataToJSON(&courses)
 		return c.JSONBlob(http.StatusOK, jsonData)
+	}
+}
+
+// PostCourse creates new course
+func PostCourse() echo.HandlerFunc {
+	return func(c echo.Context) (err error) {
+		path := c.Get("data").(string)
+		courseName := c.FormValue("name")
+
+		// Create clean string - https://golangcode.com/how-to-remove-all-non-alphanumerical-characters-from-a-string/
+		reg, err := regexp.Compile("[^a-zA-Z0-9]+")
+		courseFile := reg.ReplaceAllString(courseName, "_")
+
+		fmt.Println("Clean name ", courseFile)
+		if courseFile == "" || !helper.CheckFilename(courseFile) {
+			return c.JSONBlob(http.StatusBadRequest, []byte(`[]`))
+		}
+
+		filePath := filepath.Join(path, courseFile+".json")
+		fmt.Println("Course data at", filePath)
+
+		var course CourseMeta
+		course.Name = courseName
+		fmt.Println(course)
+
+		newCourseData, _ := json.MarshalIndent(course, "", "    ")
+		err = ioutil.WriteFile(filePath, newCourseData, 0644)
+		if err != nil {
+			return c.JSONBlob(http.StatusBadRequest, []byte(``))
+		}
+		return c.JSONBlob(http.StatusOK, newCourseData)
 	}
 }

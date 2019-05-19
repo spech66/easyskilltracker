@@ -30,6 +30,42 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "New course",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "api Test$",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8045/api/course",
+							"host": [
+								"localhost"
+							],
+							"port": "8045",
+							"path": [
+								"api",
+								"course"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},

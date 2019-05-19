@@ -64,6 +64,7 @@ func Init(data string) *echo.Echo {
 	apiGroup := e.Group("/api")
 	{
 		apiGroup.GET("/course", api.GetCourse())
+		apiGroup.POST("/course", api.PostCourse())
 
 		apiGroup.GET("/skill/:course", api.GetSkill())
 		apiGroup.PATCH("/skill/progress/:course", api.UpgradeProgress())
