@@ -5,7 +5,8 @@
 {{end}}
 {{define "body"}}
 <div class="container text-center">
-    <h1 data-bind="text: course.name"></h1>
+    <h1><i data-bind="attr: { class: icon }"></i> <span data-bind="text: name"></span></h1>
+    <p data-bind="text: description"></p>
 
     <!--<table class="table table-striped">
         <thead>
@@ -34,35 +35,36 @@
             </tr>
         </tbody>
     </table>-->
+
+    From <a data-bind="attr: { href: url(), title: author }" target="_blank"><span data-bind="text: author"></span></a>. Version <span data-bind="text: version"></span>.
 </div>
 {{end}}
 {{define "scripts"}}
 <script>
-    function Course(data) {
-        this.file = ko.observable(data.File); // struct has File not file!
-        this.name = ko.observable(data.name);
-        this.description = ko.observable(data.description);
-        this.author = ko.observable(data.author)
-        this.url = ko.observable(data.url);
-        this.version = ko.observable(data.version);
-        this.icon = ko.observable(data.icon);
-    }
-
-    function CourseListViewModel() {
+    function SkillsViewModel() {
         // Data
         var self = this;
-        self.course = ko.observable();
+        self.name = ko.observable("xxx");
+        self.description = ko.observable("");
+        self.author = ko.observable("")
+        self.url = ko.observable("");
+        self.version = ko.observable("");
+        self.icon = ko.observable("");
 
         // Load initial state from server, convert it to Course instances, then populate self.course
         $.getJSON("/api/skill/{{ .course }}", function(data) {
-            /*data = data.sort((a, b) => (a.name > b.name) ? -1 : ((b.name > a.name) ? 1 : 0)); // Descending
-            var mappedGroups = $.map(data, function(item) { return new Course(item) });*/
-            self.course(new Course(data));
+            console.log(data);
+            self.name(data.name);
+            self.description(data.description);
+            self.author(data.author)
+            self.url(data.url);
+            self.version(data.version);
+            self.icon(data.icon);
         });
     }
 
     $(function () {
-        ko.applyBindings(new CourseListViewModel());
+        ko.applyBindings(new SkillsViewModel());
     });
 </script>
 {{end}}
