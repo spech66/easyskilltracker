@@ -1,4 +1,5 @@
 {
+    "File": "",
     "name": "Test Course",
     "description": "Random resources for testing",
     "author": "Sebastian Pech",
@@ -14,18 +15,23 @@
                     "name": "HOW TO SHUFFLE - GETTING UP TO SPEED",
                     "order": 0,
                     "description": "Learn the running man",
-                    "resources": [ "https://www.youtube.com/watch?v=v-fsbZ5VgTU" ],
+                    "resources": [
+                        "https://www.youtube.com/watch?v=v-fsbZ5VgTU"
+                    ],
                     "progress": 3
                 },
                 {
                     "name": "Running Man Tutorial",
                     "order": 1,
                     "description": "Learn the running man",
-                    "resources": [ "https://www.youtube.com/watch?v=zt6ixfK2WQg" ],
+                    "resources": [
+                        "https://www.youtube.com/watch?v=zt6ixfK2WQg"
+                    ],
                     "progress": 1
-                }                
+                }
             ]
-        }, {
+        },
+        {
             "name": "Advanced",
             "order": 1,
             "skills": [
@@ -33,9 +39,11 @@
                     "name": "Shuffle",
                     "order": 0,
                     "description": "HOW TO SHUFFLE part 2",
-                    "resources": [ "https://www.youtube.com/watch?v=z0hyq1RvQmw" ],
+                    "resources": [
+                        "https://www.youtube.com/watch?v=z0hyq1RvQmw"
+                    ],
                     "progress": 0
-                }                
+                }
             ]
         }
     ]

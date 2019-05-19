@@ -122,7 +122,7 @@ func UpgradeProgress() echo.HandlerFunc {
 		}
 		fmt.Println(course)
 
-		newCourseData, _ := json.Marshal(course)
+		newCourseData, _ := json.MarshalIndent(course, "", "    ")
 		err = ioutil.WriteFile(filePath, newCourseData, 0644)
 		if err != nil {
 			return c.JSONBlob(http.StatusBadRequest, []byte(``))
