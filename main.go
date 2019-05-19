@@ -3,6 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
+
+	"github.com/spech66/easyskilltracker/route"
 )
 
 var flagBind string
@@ -19,4 +21,9 @@ func main() {
 	fmt.Println("================")
 	fmt.Println("Binding server to", flagBind)
 	fmt.Println("Reading data from", flagData)
+
+	router := route.Init(flagData)
+
+	// Start the server
+	router.Logger.Fatal(router.Start(flagBind))
 }
