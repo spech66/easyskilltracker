@@ -11,6 +11,19 @@ Super easy flat file based selfhosted skill tracker (learn new skills from multi
 * Selfhosted
 * Free and open
 
+## TODO
+
+* Make progress changeable
+* Use order
+* Allow creation of a new course
+
+## Screenshots
+
+![Start](https://raw.githubusercontent.com/spech66/easyskilltracker/master/_screenshots/s_001_start "Start")
+![Skills](https://raw.githubusercontent.com/spech66/easyskilltracker/master/_screenshots/s_002_skills_01.png "Skills")
+
+[More screenshots](https://github.com/spech66/easyskilltracker/tree/master/_screenshots)
+
 ## Security information
 
 This daemon is developed for use in a private network. For securing the access use a proxy like nginx (see below)!
