@@ -7,36 +7,32 @@
 <div class="container text-center">
     <h1><i data-bind="attr: { class: icon }"></i> <span data-bind="text: name"></span></h1>
     <p data-bind="text: description"></p>
+    <p><em>Course created by <a data-bind="attr: { href: url, title: author }" target="_blank"><span data-bind="text: author"></span></a>. Version <span data-bind="text: version"></span>.</em></p>
+       
+    <!-- ko foreach: groups -->
+        <h2><span data-bind="text: name"></span></h2>
 
-    <!--<table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Description</th>
-                <th scope="col">Author</th>
-                <th scope="col">Version</th>
-            </tr>
-        </thead>
-        <tbody data-bind="foreach: courses, visible: courses().length > 0">
-            <tr>
-                <td>
-                    <i data-bind="attr: { class: icon }"></i>
-                    <a data-bind="attr: { href: '/skill/' + file(), title: name }">
-                        <span data-bind="text: name"></span>
-                    </a>
-                </td>
-                <td><span data-bind="text: description"></span></td>
-                <td>
-                    <a data-bind="attr: { href: url(), title: author }" target="_blank">
-                        <span data-bind="text: author"></span>
-                    </a>
-                </td>
-                <td><span data-bind="text: version"></span></td>
-            </tr>
-        </tbody>
-    </table>-->
-
-    From <a data-bind="attr: { href: url(), title: author }" target="_blank"><span data-bind="text: author"></span></a>. Version <span data-bind="text: version"></span>.
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Resources</th>
+                    <th scope="col">Progress</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: skills">
+                <tr>
+                    <td><span data-bind="text: name"></span></td>
+                    <td><span data-bind="text: description"></span></td>
+                    <td data-bind="foreach: resources">
+                        <a data-bind="attr: { href: $data, title: $data }" target="_blank"><i class="fas fa-link"></i></a>
+                    </td>
+                    <td><span data-bind="text: progress"></span></td>
+                </tr>
+            </tbody>
+        </table>
+    <!-- /ko -->
 </div>
 {{end}}
 {{define "scripts"}}
@@ -50,6 +46,7 @@
         self.url = ko.observable("");
         self.version = ko.observable("");
         self.icon = ko.observable("");
+        self.groups = ko.observableArray([]);
 
         // Load initial state from server, convert it to Course instances, then populate self.course
         $.getJSON("/api/skill/{{ .course }}", function(data) {
@@ -60,6 +57,7 @@
             self.url(data.url);
             self.version(data.version);
             self.icon(data.icon);
+            self.groups(data.groups);
         });
     }
 
