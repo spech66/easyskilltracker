@@ -1,0 +1,8 @@
+{
+    "name": "Test Course",
+    "description": "Random resources for testing",
+    "author": "Sebastian Pech",
+    "url": "https://www.spech.de",
+    "version": "0.1",
+    "icon": "fas fa-rocket"
+}

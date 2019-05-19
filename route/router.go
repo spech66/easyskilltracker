@@ -61,6 +61,8 @@ func Init(data string) *echo.Echo {
 	// Api routes => handler
 	apiGroup := e.Group("/api")
 	{
+		apiGroup.GET("/course", api.GetCourse())
+
 		apiGroup.GET("/skill", api.GetSkill())
 	}
 
