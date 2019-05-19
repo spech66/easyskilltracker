@@ -4,5 +4,32 @@
     "author": "Sebastian Pech",
     "url": "https://www.spech.de",
     "version": "0.1",
-    "icon": "fas fa-rocket"
+    "icon": "fas fa-rocket",
+    "groups": [
+        {
+            "name": "Beginner",
+            "order": 0,
+            "skills": [
+                {
+                    "name": "Shuffle",
+                    "order": 0,
+                    "description": "Learn the running man",
+                    "resources": [ "https://www.youtube.com/watch?v=v-fsbZ5VgTU" ],
+                    "progress": 0
+                }
+            ]
+        }, {
+            "name": "Advanced",
+            "order": 1,
+            "skills": [
+                {
+                    "name": "Shuffle",
+                    "order": 0,
+                    "description": "HOW TO SHUFFLE part 2",
+                    "resources": [ "https://www.youtube.com/watch?v=z0hyq1RvQmw" ],
+                    "progress": 0
+                }                
+            ]
+        }
+    ]
 }

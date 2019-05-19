@@ -50,10 +50,12 @@ func Init(data string) *echo.Echo {
 
 	// View routes => handler
 	e.GET("/", view.HomeHandler)
+	e.GET("/skill/:course", view.SkillHandler)
 
 	// Parse all templates
 	templates := make(map[string]*template.Template)
 	templates["index.htm"] = template.Must(template.ParseFiles("templates/index.htm", "templates/_base.htm"))
+	templates["skill.htm"] = template.Must(template.ParseFiles("templates/skill.htm", "templates/_base.htm"))
 	e.Renderer = &TemplateRegistry{
 		templates: templates,
 	}
@@ -63,7 +65,7 @@ func Init(data string) *echo.Echo {
 	{
 		apiGroup.GET("/course", api.GetCourse())
 
-		apiGroup.GET("/skill", api.GetSkill())
+		apiGroup.GET("/skill/:course", api.GetSkill())
 	}
 
 	return e

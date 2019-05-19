@@ -46,14 +46,15 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "localhost:8045/api/skill",
+							"raw": "localhost:8045/api/skill/test",
 							"host": [
 								"localhost"
 							],
 							"port": "8045",
 							"path": [
 								"api",
-								"skill"
+								"skill",
+								"test"
 							]
 						}
 					},

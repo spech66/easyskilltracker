@@ -13,8 +13,8 @@ import (
 	"github.com/spech66/easyskilltracker/helper"
 )
 
-// Course contains csv/json data
-type Course struct {
+// CourseMeta contains csv/json data
+type CourseMeta struct {
 	File        string
 	Name        string `json:"name"`
 	Description string `json:"description"`
@@ -22,6 +22,7 @@ type Course struct {
 	URL         string `json:"url"`
 	Version     string `json:"version"`
 	Icon        string `json:"icon"`
+	//Groups      []CourseGroup `json:"groups"` // Ignore on this level
 }
 
 // GetCourse returns all courses
@@ -34,7 +35,7 @@ func GetCourse() echo.HandlerFunc {
 			panic(err)
 		}
 
-		var courses []Course
+		var courses []CourseMeta
 		for _, f := range files {
 			if !f.IsDir() && strings.HasSuffix(f.Name(), ".json") {
 				filePath := filepath.Join(path, f.Name())
@@ -47,13 +48,13 @@ func GetCourse() echo.HandlerFunc {
 				defer jsonFile.Close()
 				jsonData, _ := ioutil.ReadAll(jsonFile)
 
-				var course Course
+				var course CourseMeta
 				if err := json.Unmarshal(jsonData, &course); err != nil {
 					panic(err)
 				}
 				fmt.Println(course)
 
-				course.File = f.Name()
+				course.File = strings.Replace(f.Name(), ".json", "", -1)
 				courses = append(courses, course)
 			}
 		}

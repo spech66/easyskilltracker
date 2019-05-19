@@ -4,5 +4,20 @@
     "author": "Sebastian Pech",
     "url": "https://www.spech.de",
     "version": "0.2",
-    "icon": "fas fa-running"
+    "icon": "fas fa-running",
+    "groups": [
+        {
+            "name": "Essential",
+            "order": 0,
+            "skills": [
+                
+            ]
+        }, {
+            "name": "Nice to know",
+            "order": 1,
+            "skills": [
+                
+            ]
+        }
+    ]
 }

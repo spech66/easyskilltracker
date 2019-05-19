@@ -4,57 +4,70 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"path/filepath"
-	"strings"
 
 	"github.com/labstack/echo"
 	"github.com/spech66/easyskilltracker/helper"
 )
 
+// Course contains csv/json data
+type Course struct {
+	File        string
+	Name        string        `json:"name"`
+	Description string        `json:"description"`
+	Author      string        `json:"author"`
+	URL         string        `json:"url"`
+	Version     string        `json:"version"`
+	Icon        string        `json:"icon"`
+	Groups      []CourseGroup `json:"groups"`
+}
+
+// CourseGroup contains csv/json data
+type CourseGroup struct {
+	Name   string  `json:"name"`
+	Order  int     `json:"order"`
+	Skills []Skill `json:"skills"`
+}
+
 // Skill contains csv/json data
 type Skill struct {
-	Group       string
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	Resources   string `json:"resources"`
-	Progress    string `json:"progress"`
+	Name        string   `json:"name"`
+	Order       int      `json:"order"`
+	Description string   `json:"description"`
+	Resources   []string `json:"resources"`
+	Progress    int      `json:"progress"`
 }
 
 // GetSkill returns all skill data
 func GetSkill() echo.HandlerFunc {
 	return func(c echo.Context) (err error) {
 		path := c.Get("data").(string)
+		courseFile := c.Param("course")
+		fmt.Println("Get for course", courseFile)
+		if courseFile == "" || !helper.CheckFilename(courseFile) {
+			return c.JSONBlob(http.StatusBadRequest, []byte(`[]`))
+		}
 
-		files, err := ioutil.ReadDir(path)
+		filePath := filepath.Join(path, courseFile+".json")
+		fmt.Println("Course data from", filePath)
+
+		jsonFile, err := os.Open(filePath)
 		if err != nil {
 			panic(err)
 		}
+		defer jsonFile.Close()
+		jsonData, _ := ioutil.ReadAll(jsonFile)
 
-		var skills []Skill
-		for _, f := range files {
-			if !f.IsDir() {
-				filePath := filepath.Join(path, f.Name())
-				fmt.Println("Skill data from", filePath)
-				lines := helper.ReadAllDataFromCSV(filePath)
-
-				firstLine := true
-				for _, line := range lines {
-					data := Skill{
-						Group:       strings.Replace(f.Name(), ".csv", "", -1),
-						Name:        line[0],
-						Description: line[1],
-						Resources:   line[2],
-						Progress:    line[3],
-					}
-					if !firstLine {
-						skills = append(skills, data)
-					}
-					firstLine = false
-				}
-			}
+		/*var course Course
+		if err := json.Unmarshal(jsonData, &course); err != nil {
+			panic(err)
 		}
+		fmt.Println(course)
 
-		jsonData := helper.DataToJSON(&skills)
+		jsonDataExport := helper.DataToJSON(&course)
+		return c.JSONBlob(http.StatusOK, jsonDataExport)*/
+
 		return c.JSONBlob(http.StatusOK, jsonData)
 	}
 }
