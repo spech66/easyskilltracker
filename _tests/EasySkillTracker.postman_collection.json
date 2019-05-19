@@ -6,7 +6,35 @@
 	},
 	"item": [
 		{
-			"name": "skills",
+			"name": "course",
+			"item": [
+				{
+					"name": "Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:8045/api/course",
+							"host": [
+								"localhost"
+							],
+							"port": "8045",
+							"path": [
+								"api",
+								"course"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "skill",
 			"item": [
 				{
 					"name": "Get All",

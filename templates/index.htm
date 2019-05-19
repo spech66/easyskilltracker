@@ -1,17 +1,81 @@
 {{define "title"}}
-    Home
+    Courses
 {{end}}
 {{define "header"}}
 {{end}}
 {{define "body"}}
 <div class="container text-center">
-    <h1>EasySkillTracker</h1>
-    <div class="row">
-        <div class="col-12 col-md-6">
-            <a class="btn btn-primary btn-lg" href="/skill/x" role="button"><i class="fas fa-weight fa-4x"></i><br />x</a>
-        </div>
+    <h1>Courses</h1>
+
+    <div class="alert alert-success" role="alert" data-bind="visible: successMessage().length > 0">
+        Saved successfully.
     </div>
+    <div class="alert alert-danger" role="alert" data-bind="visible: errorMessage().length > 0, text: errorMessage">
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Author</th>
+                <th scope="col">Version</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: courses, visible: courses().length > 0">
+            <tr>
+                <td>
+                    <i data-bind="attr: { class: icon }"></i>
+                    <a data-bind="attr: { href: '/skill/' + file(), title: name }">
+                        <span data-bind="text: name"></span>
+                    </a>
+                </td>
+                <td><span data-bind="text: description"></span></td>
+                <td>
+                    <a data-bind="attr: { href: url(), title: author }" target="_blank">
+                        <span data-bind="text: author"></span>
+                    </a>
+                </td>
+                <td><span data-bind="text: version"></span></td>
+                <td>
+                    <!--<a href="#" data-bind="click: $parent.cloneEnduranceworkout"><i class="fas fa-clone fa-2x"></i></a>
+                    <a href="#" data-bind="click: $parent.removeEnduranceworkout"><i class="fas fa-trash fa-2x"></i></a>-->
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 {{end}}
 {{define "scripts"}}
+<script>
+    function Course(data) {
+        this.file = ko.observable(data.File); // struct has File not file!
+        this.name = ko.observable(data.name);
+        this.description = ko.observable(data.description);
+        this.author = ko.observable(data.author)
+        this.url = ko.observable(data.url);
+        this.version = ko.observable(data.version);
+        this.icon = ko.observable(data.icon);
+    }
+
+function CourseListViewModel() {
+    // Data
+    var self = this;
+    self.successMessage = ko.observable("");
+    self.errorMessage = ko.observable("");
+    self.courses = ko.observableArray([]);
+
+    // Load initial state from server, convert it to Course instances, then populate self.courses
+    $.getJSON("/api/course", function(data) {
+        data = data.sort((a, b) => (a.name > b.name) ? -1 : ((b.name > a.name) ? 1 : 0)); // Descending
+        var mappedCourses = $.map(data, function(item) { return new Course(item) });
+        self.courses(mappedCourses);
+    });
+}
+
+$(function () {
+    ko.applyBindings(new CourseListViewModel());
+});
+</script>
 {{end}}
