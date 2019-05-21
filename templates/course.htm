@@ -54,7 +54,12 @@
     </div>
 
     <!-- ko foreach: groups -->
-        <h2><span data-bind="text: name"></span> <a href="#" data-bind="click: $root.deleteGroup"><i class="fas fa-trash"></i></a></h2>
+        <h2>
+            <span data-bind="text: name"></span>
+            <a href="#" data-bind="click: $root.deleteGroup"><i class="fas fa-trash"></i></a>
+            <a href="#" data-bind="click: $root.moveGroupUp"><i class="fas fa-arrow-up"></i></a>   
+            <a href="#" data-bind="click: $root.moveGroupDown"><i class="fas fa-arrow-down"></i></a>            
+        </h2>
 
         <table class="table table-striped">
             <thead>
@@ -65,7 +70,8 @@
                     <th scope="col">Progress</th>
                 </tr>
             </thead>
-            <tbody data-bind="foreach: skills">
+            <tbody>                
+                <!-- ko foreach: skills -->
                 <tr>
                     <td><span data-bind="text: name"></span></td>
                     <td><span data-bind="text: description"></span></td>
@@ -74,6 +80,7 @@
                     </td>
                     <td><span data-bind="text: progress"></span></td>
                 </tr>
+                <!-- /ko -->
             </tbody>
         </table>
     <!-- /ko -->
@@ -157,6 +164,30 @@ function CourseViewModel() {
     }
     self.deleteGroup = function (data) {
         self.course().groups.remove(data);
+    }
+    self.moveGroupUp = function (e1) {
+        const index = self.course().groups.indexOf(e1);
+        if(index > 0 && index - 1 >= 0) {
+            self.course().groups.swap(index, index - 1);
+        }
+    }
+    self.moveGroupDown = function (e1) {
+        const index = self.course().groups.indexOf(e1);
+        if(index > -1 && index + 1 < self.course().groups().length) {
+            self.course().groups.swap(index, index + 1);
+        }
+    }
+
+    // Helper
+    // Swap array values - https://stackoverflow.com/questions/10258086/how-do-i-swap-two-items-in-an-observablearray
+    ko.observableArray.fn.swap = function(index1, index2) {
+        this.valueWillMutate();
+
+        var temp = this()[index1];
+        this()[index1] = this()[index2];
+        this()[index2] = temp;
+
+        this.valueHasMutated();
     }
 
     // Load initial state from server, convert it to Course instances, then populate self.course
