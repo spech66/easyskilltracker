@@ -110,24 +110,17 @@ func PostCourse() echo.HandlerFunc {
 func PatchCourse() echo.HandlerFunc {
 	return func(c echo.Context) (err error) {
 		courseFile := c.FormValue("file")
-		courseName := c.FormValue("name")
-		courseDescription := c.FormValue("description")
-		courseAuthor := c.FormValue("author")
-		courseURL := c.FormValue("url")
-		courseVersion := c.FormValue("version")
-		courseIcon := c.FormValue("icon")
+		courseData := c.FormValue("course")
 
 		// In a real app there should be validation/sanitation on the input... ;)
 
 		var course Course
+		if err := json.Unmarshal([]byte(courseData), &course); err != nil {
+			return c.JSONBlob(http.StatusBadRequest, []byte(courseData))
+		}
+		fmt.Println(course)
+
 		course.File = courseFile
-		course.Name = courseName
-		course.Description = courseDescription
-		course.Author = courseAuthor
-		course.URL = courseURL
-		course.Version = courseVersion
-		course.Icon = courseIcon
-		// course.Groups =
 
 		return CreateOrUpdateCourse(courseFile, course, c)
 	}

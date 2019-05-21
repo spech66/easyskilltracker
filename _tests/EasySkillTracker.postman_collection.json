@@ -84,33 +84,8 @@
 									"type": "text"
 								},
 								{
-									"key": "name",
-									"value": "api Test$",
-									"type": "text"
-								},
-								{
-									"key": "description",
-									"value": "Test description",
-									"type": "text"
-								},
-								{
-									"key": "author",
-									"value": "Anonymous",
-									"type": "text"
-								},
-								{
-									"key": "url",
-									"value": "http://localhost:8045/api/course",
-									"type": "text"
-								},
-								{
-									"key": "version",
-									"value": "0.1",
-									"type": "text"
-								},
-								{
-									"key": "icon",
-									"value": "fas fa-home",
+									"key": "course",
+									"value": " {\"name\":\"API Test\",\"description\":\"Test description\",\"author\":\"Anonymous\",\"url\":\"http://localhost:8045/api/course\",\"version\":\"0.1\",\"icon\":\"fas fa-home\",\"groups\":[{\"name\":\"xx\",\"order\":0,\"skills\":[]},{\"name\":\"xx\",\"order\":1,\"skills\":[]}]}",
 									"type": "text"
 								}
 							]

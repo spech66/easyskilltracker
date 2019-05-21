@@ -45,8 +45,16 @@
         </div>
     </form>
 
+    <div class="form-inline">
+        <div class="form-group mb-2">
+            <label for="newGroupInput" class="sr-only">Group name</label>
+            <input type="text" class="form-control form-control-lg" id="newGroupInput" data-bind="value: $root.newGroupName">
+        </div>
+        <button data-bind="click: $root.addGroup" class="btn btn-primary mb-2"><i class="fas fa-plus fa-2x"></i></button>
+    </div>
+
     <!-- ko foreach: groups -->
-        <h2><span data-bind="text: name"></span></h2>
+        <h2><span data-bind="text: name"></span> <a href="#" data-bind="click: $root.deleteGroup"><i class="fas fa-trash"></i></a></h2>
 
         <table class="table table-striped">
             <thead>
@@ -69,6 +77,14 @@
             </tbody>
         </table>
     <!-- /ko -->
+    
+    <form data-bind="submit: $root.saveMetadata">
+        <div class="row">
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-save fa-4x"></i><br /></button>
+            </div>
+        </div>
+    </form>
 </div>
 {{end}}
 {{define "scripts"}}
@@ -107,6 +123,7 @@ function CourseViewModel() {
     self.successMessage = ko.observable("");
     self.errorMessage = ko.observable("");
     self.course = ko.observable("");
+    self.newGroupName = ko.observable("");
 
     // Operations
     self.saveMetadata = function() {
@@ -116,19 +133,30 @@ function CourseViewModel() {
             type: "PATCH",
             data: {
             file: "{{ .course }}",
-            name: self.course().name(),
-            description: self.course().description(),
-            author: self.course().author(),
-            url: self.course().url(),
-            version: self.course().version(),
-            icon: self.course().icon()
+            course: ko.toJSON(self.course())
         }})
         .done(function(data) {
             self.successMessage(data.name);
+            self.course(new Course(data))
         })
         .fail(function (jqXHR, textStatus, error) {
             self.errorMessage("Patch error: " + error);
         });
+    }
+    self.addGroup = function() {
+        if(self.newGroupName() === "") {
+            return;
+        }
+
+        const cg = new CourseGroup({
+            name: self.newGroupName(),
+            order: self.course().groups().length,
+            skills: null
+        });
+        self.course().groups.push(cg);
+    }
+    self.deleteGroup = function (data) {
+        self.course().groups.remove(data);
     }
 
     // Load initial state from server, convert it to Course instances, then populate self.course
