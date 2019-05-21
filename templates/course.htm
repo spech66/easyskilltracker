@@ -1,11 +1,11 @@
 {{define "title"}}
-    Edit Course
+    Edit course
 {{end}}
 {{define "header"}}
 {{end}}
 {{define "body"}}
 <div class="container text-center" data-bind="with: course">
-    <h1>Metadata</h1>
+    <h1>Edit course</h1>
 
     <div class="alert alert-success" role="alert" data-bind="visible: $root.successMessage().length > 0">
         Saved successfully.
@@ -47,7 +47,7 @@
 
     <div class="form-inline">
         <div class="form-group mb-2">
-            <label for="newGroupInput" class="sr-only">Group name</label>
+            <label for="newGroupInput">Group name </label>
             <input type="text" class="form-control form-control-lg" id="newGroupInput" data-bind="value: $root.newGroupName">
         </div>
         <button data-bind="click: $root.addGroup" class="btn btn-primary mb-2"><i class="fas fa-plus fa-2x"></i></button>
@@ -67,10 +67,10 @@
                     <th scope="col">Name</th>
                     <th scope="col">Description</th>
                     <th scope="col">Resources</th>
-                    <th scope="col">Progress</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
-            <tbody>                
+            <tbody>
                 <!-- ko foreach: skills -->
                 <tr>
                     <td><span data-bind="text: name"></span></td>
@@ -78,9 +78,21 @@
                     <td data-bind="foreach: resources">
                         <a data-bind="attr: { href: $data, title: $data }" target="_blank"><i class="fas fa-link"></i></a>
                     </td>
-                    <td><span data-bind="text: progress"></span></td>
+                    <td>
+                        <a href="#" data-bind="click: $root.deleteSkill"><i class="fas fa-trash"></i></a>
+                        <a href="#" data-bind="click: $root.moveSkillUp"><i class="fas fa-arrow-up"></i></a>   
+                        <a href="#" data-bind="click: $root.moveSkillDown"><i class="fas fa-arrow-down"></i></a>   
+                    </td>
                 </tr>
                 <!-- /ko -->
+                <tr>
+                    <td><input type="text" class="form-control form-control-lg" data-bind="value: $root.newSkillName"></td>
+                    <td><input type="text" class="form-control form-control-lg" data-bind="value: $root.newSkillDescription"></td>
+                    <td><textarea class="form-control form-control-lg" id="exampleFormControlTextarea1" rows="3" data-bind="textInput: $root.newSkillResources"></textarea></td>
+                    <td>
+                        <a href="#" data-bind="click: $root.addSkill"><i class="fas fa-plus"></i></a>
+                    </td>
+                </tr>
             </tbody>
         </table>
     <!-- /ko -->
@@ -131,6 +143,9 @@ function CourseViewModel() {
     self.errorMessage = ko.observable("");
     self.course = ko.observable("");
     self.newGroupName = ko.observable("");
+    self.newSkillName = ko.observable("");
+    self.newSkillDescription = ko.observable("");
+    self.newSkillResources = ko.observable("");
 
     // Operations
     self.saveMetadata = function() {
@@ -150,6 +165,7 @@ function CourseViewModel() {
             self.errorMessage("Patch error: " + error);
         });
     }
+    // Group operations
     self.addGroup = function() {
         if(self.newGroupName() === "") {
             return;
@@ -161,23 +177,60 @@ function CourseViewModel() {
             skills: null
         });
         self.course().groups.push(cg);
+        self.newGroupName("");
     }
     self.deleteGroup = function (data) {
         self.course().groups.remove(data);
     }
-    self.moveGroupUp = function (e1) {
-        const index = self.course().groups.indexOf(e1);
+    self.moveGroupUp = function (data) {
+        const index = self.course().groups.indexOf(data);
         if(index > 0 && index - 1 >= 0) {
             self.course().groups.swap(index, index - 1);
         }
     }
-    self.moveGroupDown = function (e1) {
-        const index = self.course().groups.indexOf(e1);
+    self.moveGroupDown = function (data) {
+        const index = self.course().groups.indexOf(data);
         if(index > -1 && index + 1 < self.course().groups().length) {
             self.course().groups.swap(index, index + 1);
         }
     }
+    // Skill operations
+    self.addSkill = function (data) { // Data is CourseGroup
+        if(self.newSkillName() === "") {
+            return;
+        }
 
+        const s = new Skill({
+            name: self.newSkillName(),
+            order: data.skills().length,
+            description: self.newSkillDescription(),
+            resources: self.newSkillResources().split("\n"),
+            progress: 0
+        });
+        data.skills.push(s);
+        self.newSkillName("");
+        self.newSkillDescription("");
+        self.newSkillResources("");
+    }
+    self.deleteSkill = function (data, e) {
+        var context = ko.contextFor(e.target); // context.$parent => CourseGroup
+        context.$parent.skills.remove(data);
+    }
+    self.moveSkillUp = function (data, e) {
+        var context = ko.contextFor(e.target); // context.$parent => CourseGroup
+        const index = context.$parent.skills.indexOf(data);
+        if(index > 0 && index - 1 >= 0) {
+            context.$parent.skills.swap(index, index - 1);
+        }
+    }
+    self.moveSkillDown = function (data, e) {
+        var context = ko.contextFor(e.target); // context.$parent => CourseGroup
+        const index = context.$parent.skills.indexOf(data);
+        if(index > -1 && index + 1 < context.$parent.skills().length) {
+            context.$parent.skills.swap(index, index + 1);
+        }
+    }
+    
     // Helper
     // Swap array values - https://stackoverflow.com/questions/10258086/how-do-i-swap-two-items-in-an-observablearray
     ko.observableArray.fn.swap = function(index1, index2) {
