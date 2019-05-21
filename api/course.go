@@ -109,6 +109,7 @@ func PostCourse() echo.HandlerFunc {
 // PatchCourse updates course
 func PatchCourse() echo.HandlerFunc {
 	return func(c echo.Context) (err error) {
+		courseFile := c.FormValue("file")
 		courseName := c.FormValue("name")
 		courseDescription := c.FormValue("description")
 		courseAuthor := c.FormValue("author")
@@ -119,6 +120,7 @@ func PatchCourse() echo.HandlerFunc {
 		// In a real app there should be validation/sanitation on the input... ;)
 
 		var course Course
+		course.File = courseFile
 		course.Name = courseName
 		course.Description = courseDescription
 		course.Author = courseAuthor
@@ -127,6 +129,6 @@ func PatchCourse() echo.HandlerFunc {
 		course.Icon = courseIcon
 		// course.Groups =
 
-		return CreateOrUpdateCourse(courseName, course, c)
+		return CreateOrUpdateCourse(courseFile, course, c)
 	}
 }

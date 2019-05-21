@@ -79,6 +79,11 @@
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
+									"key": "file",
+									"value": "api_Test_",
+									"type": "text"
+								},
+								{
 									"key": "name",
 									"value": "api Test$",
 									"type": "text"

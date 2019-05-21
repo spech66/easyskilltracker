@@ -1,9 +1,144 @@
 {{define "title"}}
-    Course
+    Edit Course
 {{end}}
 {{define "header"}}
 {{end}}
 {{define "body"}}
+<div class="container text-center" data-bind="with: course">
+    <h1>Metadata</h1>
+
+    <div class="alert alert-success" role="alert" data-bind="visible: $root.successMessage().length > 0">
+        Saved successfully.
+    </div>
+    <div class="alert alert-danger" role="alert" data-bind="visible: $root.errorMessage().length > 0, text: $root.errorMessage">
+    </div>
+
+    <form data-bind="submit: $root.saveMetadata">
+        <div class="form-group">
+            <label for="nameInput">Name</label>
+            <input name="name" type="text" class="form-control form-control-lg" id="nameInput" data-bind="value: name">
+        </div>
+        <div class="form-group">
+            <label for="descriptionInput">Description</label>
+            <input name="description" type="text" class="form-control form-control-lg" id="descriptionInput" data-bind="value: description">
+        </div>
+        <div class="form-group">
+            <label for="authorInput">Author</label>
+            <input name="author" type="text" class="form-control form-control-lg" id="authorInput" data-bind="value: author">
+        </div>
+        <div class="form-group">
+            <label for="urlInput">URL</label>
+            <input name="url" type="text" class="form-control form-control-lg" id="urlInput" data-bind="value: url">
+        </div>
+        <div class="form-group">
+            <label for="versionInput">Version</label>
+            <input name="version" type="text" class="form-control form-control-lg" id="versionInput" data-bind="value: version">
+        </div>
+        <div class="form-group">
+            <label for="iconInput">Icon (use: fas fa-FONTAWESOME_5_NAME)</label>
+            <input name="icon" type="text" class="form-control form-control-lg" id="iconInput" data-bind="value: icon">
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-save fa-4x"></i><br /></button>
+            </div>
+        </div>
+    </form>
+
+    <!-- ko foreach: groups -->
+        <h2><span data-bind="text: name"></span></h2>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Resources</th>
+                    <th scope="col">Progress</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: skills">
+                <tr>
+                    <td><span data-bind="text: name"></span></td>
+                    <td><span data-bind="text: description"></span></td>
+                    <td data-bind="foreach: resources">
+                        <a data-bind="attr: { href: $data, title: $data }" target="_blank"><i class="fas fa-link"></i></a>
+                    </td>
+                    <td><span data-bind="text: progress"></span></td>
+                </tr>
+            </tbody>
+        </table>
+    <!-- /ko -->
+</div>
 {{end}}
 {{define "scripts"}}
+<script>
+function Course(data) {
+    this.name = ko.observable(data.name);
+    this.description = ko.observable(data.description);
+    this.author = ko.observable(data.author)
+    this.url = ko.observable(data.url);
+    this.version = ko.observable(data.version);
+    this.icon = ko.observable(data.icon);
+
+    const courseGroups = data.groups != null ? data.groups.map(g => new CourseGroup(g)) : [];
+    this.groups = ko.observableArray(courseGroups);
+}
+
+function CourseGroup(data) {
+    this.name = ko.observable(data.name);
+    this.order = ko.observable(data.order);
+
+    const skills = data.skills != null ? data.skills.map(g => new Skill(g)) : [];
+    this.skills = ko.observableArray(skills);
+}
+
+function Skill(data) {
+    this.name = ko.observable(data.name);
+    this.order = ko.observable(data.order);
+    this.description = ko.observable(data.description);
+    this.resources = ko.observableArray(data.resources);
+    this.progress = ko.observable(data.progress);
+}
+
+function CourseViewModel() {
+    // Data
+    var self = this;
+    self.successMessage = ko.observable("");
+    self.errorMessage = ko.observable("");
+    self.course = ko.observable("");
+
+    // Operations
+    self.saveMetadata = function() {
+        self.successMessage("");
+
+        $.ajax("/api/course", {
+            type: "PATCH",
+            data: {
+            file: "{{ .course }}",
+            name: self.course().name(),
+            description: self.course().description(),
+            author: self.course().author(),
+            url: self.course().url(),
+            version: self.course().version(),
+            icon: self.course().icon()
+        }})
+        .done(function(data) {
+            self.successMessage(data.name);
+        })
+        .fail(function (jqXHR, textStatus, error) {
+            self.errorMessage("Patch error: " + error);
+        });
+    }
+
+    // Load initial state from server, convert it to Course instances, then populate self.course
+    $.getJSON("/api/skill/{{ .course }}", function(data) {
+        self.course(new Course(data))
+    });
+}
+
+$(function () {
+    ko.applyBindings(new CourseViewModel());
+});
+</script>
 {{end}}

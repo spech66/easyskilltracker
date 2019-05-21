@@ -1,5 +1,5 @@
 {{define "title"}}
-    Courses
+    Course
 {{end}}
 {{define "header"}}
 {{end}}
@@ -69,7 +69,6 @@ function Skill(data) {
     this.description = ko.observable(data.description);
     this.resources = ko.observableArray(data.resources);
     this.progress = ko.observable(data.progress);
-    console.log(this.progress());
 }
 
 function SkillsViewModel() {
