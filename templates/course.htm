@@ -79,6 +79,7 @@
                         <a data-bind="attr: { href: $data, title: $data }" target="_blank"><i class="fas fa-link"></i></a>
                     </td>
                     <td>
+                        <a href="#" data-bind="click: $root.cloneSkill"><i class="fas fa-clone"></i></a>  
                         <a href="#" data-bind="click: $root.deleteSkill"><i class="fas fa-trash"></i></a>
                         <a href="#" data-bind="click: $root.moveSkillUp"><i class="fas fa-arrow-up"></i></a>   
                         <a href="#" data-bind="click: $root.moveSkillDown"><i class="fas fa-arrow-down"></i></a>   
@@ -229,6 +230,11 @@ function CourseViewModel() {
         if(index > -1 && index + 1 < context.$parent.skills().length) {
             context.$parent.skills.swap(index, index + 1);
         }
+    }
+    self.cloneSkill = function (data) {
+        self.newSkillName(data.name());
+        self.newSkillDescription(data.description());
+        self.newSkillResources(data.resources().join("\n"));
     }
     
     // Helper

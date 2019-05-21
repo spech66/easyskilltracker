@@ -11,11 +11,6 @@ Super easy flat file based selfhosted skill tracker (learn new skills from multi
 * Selfhosted
 * Free and open
 
-## TODO
-
-* Use order
-* Allow creation of a new course
-
 ## Screenshots
 
 ![Start](https://raw.githubusercontent.com/spech66/easyskilltracker/master/_screenshots/s_001_start.png "Start")
