@@ -13,10 +13,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "localhost:8045/api/course",
 							"host": [
@@ -66,6 +62,67 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Edit course",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "api Test$",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Test description",
+									"type": "text"
+								},
+								{
+									"key": "author",
+									"value": "Anonymous",
+									"type": "text"
+								},
+								{
+									"key": "url",
+									"value": "http://localhost:8045/api/course",
+									"type": "text"
+								},
+								{
+									"key": "version",
+									"value": "0.1",
+									"type": "text"
+								},
+								{
+									"key": "icon",
+									"value": "fas fa-home",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8045/api/course",
+							"host": [
+								"localhost"
+							],
+							"port": "8045",
+							"path": [
+								"api",
+								"course"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -77,10 +134,6 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "localhost:8045/api/skill/test",
 							"host": [

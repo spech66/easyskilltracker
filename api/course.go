@@ -65,33 +65,68 @@ func GetCourse() echo.HandlerFunc {
 	}
 }
 
+// CreateOrUpdateCourse crates/updates course
+func CreateOrUpdateCourse(courseName string, course Course, c echo.Context) error {
+	path := c.Get("data").(string)
+
+	// Create clean string - https://golangcode.com/how-to-remove-all-non-alphanumerical-characters-from-a-string/
+	reg, err := regexp.Compile("[^a-zA-Z0-9]+")
+	courseFile := reg.ReplaceAllString(courseName, "_")
+
+	fmt.Println("Clean name ", courseFile)
+	if courseFile == "" || !helper.CheckFilename(courseFile) {
+		return c.JSONBlob(http.StatusBadRequest, []byte(`[]`))
+	}
+
+	filePath := filepath.Join(path, courseFile+".json")
+	fmt.Println("Course data at", filePath)
+
+	fmt.Println(course)
+
+	newCourseData, _ := json.MarshalIndent(course, "", "    ")
+	err = ioutil.WriteFile(filePath, newCourseData, 0644)
+	if err != nil {
+		return c.JSONBlob(http.StatusBadRequest, []byte(``))
+	}
+
+	return c.JSONBlob(http.StatusOK, newCourseData)
+}
+
 // PostCourse creates new course
 func PostCourse() echo.HandlerFunc {
 	return func(c echo.Context) (err error) {
-		path := c.Get("data").(string)
 		courseName := c.FormValue("name")
 
-		// Create clean string - https://golangcode.com/how-to-remove-all-non-alphanumerical-characters-from-a-string/
-		reg, err := regexp.Compile("[^a-zA-Z0-9]+")
-		courseFile := reg.ReplaceAllString(courseName, "_")
+		// In a real app there should be validation/sanitation on the input... ;)
 
-		fmt.Println("Clean name ", courseFile)
-		if courseFile == "" || !helper.CheckFilename(courseFile) {
-			return c.JSONBlob(http.StatusBadRequest, []byte(`[]`))
-		}
-
-		filePath := filepath.Join(path, courseFile+".json")
-		fmt.Println("Course data at", filePath)
-
-		var course CourseMeta
+		var course Course
 		course.Name = courseName
-		fmt.Println(course)
 
-		newCourseData, _ := json.MarshalIndent(course, "", "    ")
-		err = ioutil.WriteFile(filePath, newCourseData, 0644)
-		if err != nil {
-			return c.JSONBlob(http.StatusBadRequest, []byte(``))
-		}
-		return c.JSONBlob(http.StatusOK, newCourseData)
+		return CreateOrUpdateCourse(courseName, course, c)
+	}
+}
+
+// PatchCourse updates course
+func PatchCourse() echo.HandlerFunc {
+	return func(c echo.Context) (err error) {
+		courseName := c.FormValue("name")
+		courseDescription := c.FormValue("description")
+		courseAuthor := c.FormValue("author")
+		courseURL := c.FormValue("url")
+		courseVersion := c.FormValue("version")
+		courseIcon := c.FormValue("icon")
+
+		// In a real app there should be validation/sanitation on the input... ;)
+
+		var course Course
+		course.Name = courseName
+		course.Description = courseDescription
+		course.Author = courseAuthor
+		course.URL = courseURL
+		course.Version = courseVersion
+		course.Icon = courseIcon
+		// course.Groups =
+
+		return CreateOrUpdateCourse(courseName, course, c)
 	}
 }

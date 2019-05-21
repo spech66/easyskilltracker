@@ -51,7 +51,7 @@ function Course(data) {
     this.version = ko.observable(data.version);
     this.icon = ko.observable(data.icon);
 
-    const courseGroups = data.groups.map(g => new CourseGroup(g));
+    const courseGroups = data.groups != null ? data.groups.map(g => new CourseGroup(g)) : [];
     this.groups = ko.observableArray(courseGroups);
 }
 
@@ -59,7 +59,7 @@ function CourseGroup(data) {
     this.name = ko.observable(data.name);
     this.order = ko.observable(data.order);
 
-    const skills = data.skills.map(g => new Skill(g));
+    const skills = data.skills != null ? data.skills.map(g => new Skill(g)) : [];
     this.skills = ko.observableArray(skills);
 }
 
