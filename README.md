@@ -14,8 +14,8 @@ Super easy flat file based selfhosted skill tracker (learn new skills from multi
 ## Screenshots
 
 [![Start](https://raw.githubusercontent.com/spech66/easyskilltracker/master/_screenshots/s_001_start.png "Start")](https://raw.githubusercontent.com/spech66/easyskilltracker/master/_screenshots/001_start.png)
-![Skills](https://raw.githubusercontent.com/spech66/easyskilltracker/master/_screenshots/s_002_skills_01.png "Skills")
-![Edit](https://raw.githubusercontent.com/spech66/easyskilltracker/master/_screenshots/s_003_edit_01.png "Edit")
+[![Skills](https://raw.githubusercontent.com/spech66/easyskilltracker/master/_screenshots/s_002_skills_01.png "Skills")](https://raw.githubusercontent.com/spech66/easyskilltracker/master/_screenshots/002_skills_01.png)
+[![Edit](https://raw.githubusercontent.com/spech66/easyskilltracker/master/_screenshots/s_003_edit_01.png "Edit")](https://raw.githubusercontent.com/spech66/easyskilltracker/master/_screenshots/003_edit_01.png)
 
 [More screenshots](https://github.com/spech66/easyskilltracker/tree/master/_screenshots)
 
