@@ -1,4 +1,4 @@
-[![Go Report Card](https://goreportcard.com/badge/github.com/spech66/easyskilltracker)](https://goreportcard.com/report/github.com/spech66/easyskilltracker)
+[![Go Report Card](https://goreportcard.com/badge/github.com/spech66/easyskilltracker)](https://goreportcard.com/report/github.com/spech66/easyskilltracker) [![GoDoc](https://godoc.org/github.com/spech66/easyskilltracker?status.svg)](https://godoc.org/github.com/spech66/easyskilltracker) 
 
 # EasySkillTracker
 
