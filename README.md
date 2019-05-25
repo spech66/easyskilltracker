@@ -1,3 +1,5 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/spech66/easyskilltracker)](https://goreportcard.com/report/github.com/spech66/easyskilltracker)
+
 # EasySkillTracker
 
 Super easy flat file based selfhosted skill tracker (learn new skills from multiple resources).
