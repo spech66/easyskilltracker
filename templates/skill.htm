@@ -32,7 +32,7 @@
                     <td><span data-bind="text: name"></span></td>
                     <td><span data-bind="text: description"></span></td>
                     <td data-bind="foreach: resources">
-                        <a data-bind="attr: { href: $data, title: $data }" target="_blank"><i class="fas fa-link"></i></a>
+                        <a data-bind="if: $data != '', attr: { href: $data, title: $data }" target="_blank"><i class="fas fa-link"></i></a>
                     </td>
                     <td><a href="#" data-bind=" click: function(data, event) { $root.upgradeProgress($parent, data, event) }"><progress-widget params="progress: progress"></progress-widget></a></td>
                 </tr>

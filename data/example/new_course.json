@@ -1,4 +1,5 @@
 {
+    "File": "new_course",
     "name": "Course name",
     "description": "Say something about the course.",
     "author": "Sebastian Pech",
@@ -27,6 +28,15 @@
                         "https://www.youtube.com/"
                     ],
                     "progress": 0
+                },
+                {
+                    "name": "Skill 3",
+                    "order": 2,
+                    "description": "Empty resource test.",
+                    "resources": [
+                        ""
+                    ],
+                    "progress": 0
                 }
             ]
         },
@@ -35,7 +45,7 @@
             "order": 1,
             "skills": [
                 {
-                    "name": "Skill 3",
+                    "name": "Skill 4",
                     "order": 0,
                     "description": "Say something about the skill.",
                     "resources": [
