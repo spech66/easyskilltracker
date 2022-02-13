@@ -32,9 +32,10 @@
                     <td><span data-bind="text: name"></span></td>
                     <td><span data-bind="text: description"></span></td>
                     <td data-bind="foreach: resources">
-                        <a data-bind="if: $data != '', attr: { href: $data, title: $data }" target="_blank"><i class="fas fa-link"></i></a>
+                        <a data-bind="if: $data != '' && !isPreview($data), attr: { href: $data, title: $data }" target="_blank"><i class="fas fa-link"></i></a>
+                        <a data-bind="if: $data != '' && isPreview($data), attr: { href: $data, title: $data }" target="_blank"><img data-bind="attr: { src: previewUrl($data), alt: $data }" class="preview" /></a>
                     </td>
-                    <td><a href="#" data-bind=" click: function(data, event) { $root.upgradeProgress($parent, data, event) }"><progress-widget params="progress: progress"></progress-widget></a></td>
+                    <td><a href="#" data-bind="click: function(data, event) { $root.upgradeProgress($parent, data, event) }"><progress-widget params="progress: progress"></progress-widget></a></td>
                 </tr>
             </tbody>
         </table>
@@ -43,6 +44,22 @@
 {{end}}
 {{define "scripts"}}
 <script>
+function isPreview(data) {
+    return data.includes('youtube.com') || data.includes('youtu.be');
+}
+function previewUrl(urlData) {
+    var data = new String(urlData);
+    if(data.includes('youtube.com')) {
+        data = data.replace(/.*v=/g, ''); // https://www.youtube.com/watch?v=
+        return `https://i.ytimg.com/vi/${data}/maxresdefault.jpg`;
+    }
+    if(data.includes('youtu.be')) {
+        data = data.replace(/.*\.be\//g, ''); // https://youtu.be/
+        return `https://i.ytimg.com/vi/${data}/maxresdefault.jpg`;
+    }
+    return data;
+}
+
 function Course(data) {
     this.name = ko.observable(data.name);
     this.description = ko.observable(data.description);
