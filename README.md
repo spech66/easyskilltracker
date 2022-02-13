@@ -78,3 +78,8 @@ server {
 ## Dependencies
 
 * [Go echo web framework](github.com/labstack/echo) - High performance, minimalist Go web framework
+
+## Development
+
+* Update Modules: `go mod tidy`
+* Run: `go run . -data data\example`
